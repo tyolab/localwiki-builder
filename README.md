@@ -60,7 +60,8 @@ rm -f composer.lock
 
 composer install --no-dev
 
-php maintenance/install.php "Arabic Wikipedia" "admin" --pass=aaaaa
+# This step will create a LocalSettngs.php and initialise database
+php maintenance/install.php --dbserver=127.0.0.1 --dbuser=wikiuser --dbpass=GoodDay --pass=aaaaa "Arabic Wikipedia" "admin"
 
 ```
 
