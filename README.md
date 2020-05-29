@@ -1,6 +1,6 @@
 # localwiki-builder
 
-# Steps
+# Getting Wikipedia Mysql Dumps
 ## #1 Download the Wikipedia Mysql Dump for your language
 
 For example, if we choose arabic Wikipedia
@@ -65,4 +65,68 @@ php maintenance/install.php --dbserver=127.0.0.1 --dbuser=wikiuser --dbpass=Good
 
 ```
 
+Create a set of databases
+```
+
+for lang in ar es ko; do rm LocalSettings.php; php maintenance/install.php --dbname=wikipedia_$lang --dbserver=127.0.0.1 --dbuser=wikiuser --dbpass=GoodDay --pass=aaaaa "Arabic Wikipedia" "admin"; done
+
+```
+
+More examples, creating databases for: 
+
+### Turkish Wikipedia 
+```
+php maintenance/install.php --dbname=wikipedia_tr --dbserver=127.0.0.1 --dbuser=wikiuser --dbpass=GoodDay --pass=aaaaa "Arabic Wikipedia" "admin"
+```
+
+### Arabic Wikipedia
+
+```
+php maintenance/install.php --dbname=wikipedia_ar --dbserver=127.0.0.1 --dbuser=wikiuser --dbpass=GoodDay --pass=aaaaa "Arabic Wikipedia" "admin"
+```
+
+## Mediawiki Updates
+
+```
+php maintenance/update.php
+```
+
 ## Scripts
+
+# WikiDump2SQLite
+
+
+WikiDump2SQLite is a collection of tools that can import the database dumps into mysql database, and create sqlite database from it
+
+## prerequisite
+
+### Antelope Search Engine
+
+WikiDump2SQLite doesn't use antelope as a search engine and do any searches with it, but it requires its text processing ability to read Wikipedia pages which are in XML format
+
+#### Antelope Repository
+
+https://github.com/tyolab/antelope
+
+#### Build Antelope
+```
+cd antelope_dir
+./autogen.sh
+mkdir -p build/release
+cd build/release
+../../configure
+make
+sudo make install
+```
+
+### Using WikiDump2SQLite
+
+#### import_dump
+
+import_dump implicitly uses "/data/mediawiki/all/{lang_code}wiki" as the mediawiki's home directory to run the php code - "import.php" to import pages
+
+
+```bash
+ import_dump -threads 12 -n 500 /data4/wikipedia/zhwiki/2019/zhwiki-20190920-pages-articles-multistream.xml 
+```
+
