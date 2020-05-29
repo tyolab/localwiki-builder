@@ -15,10 +15,18 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 	exit;
 }
 
-$wgLanguageCode = "ar";
+# Change the language code accordingly
+$wgLanguageCode = "xx";
+
+## Uncomment this to disable output compression
+# $wgDisableOutputCompression = true;
+
+$wgSitename = "XXXX Wikipedia";
+$wgMetaNamespace = "XXXX_Wikipedia";
 
 require_once('LocalSettingsCommon.php');
+require_once('LocalSettingsExtensions.php');
 
-#require_once('LocalSettingsDebug.php');
-#error_reporting( E_ALL ); ini_set( 'display_errors', 1 );
-#$wgShowExceptionDetails = true; 
+// require_once('LocalSettingsDebug.php');
+// error_reporting( E_ALL ); ini_set( 'display_errors', 1 );
+// $wgShowExceptionDetails = true; 
