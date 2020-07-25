@@ -7,13 +7,14 @@ For example, if we choose arabic Wikipedia
 
 we can download it from http://dumps.wikimedia.your.org/arwiki/20200301/arwiki-20200301-pages-articles-multistream.xml.bz2
 
+```bash
 mkdir arwiki
 cd arwiki
 
 wget http://dumps.wikimedia.your.org/arwiki/20200301/arwiki-20200301-pages-articles-multistream.xml.bz2
 
 bzip2 -dck arwiki-20200301-pages-articles-multistream.xml.bz2 > arwiki-20200301-pages-articles-multistream.xml
-
+```
 
 # Mediawiki Configuration
 
@@ -66,7 +67,7 @@ php maintenance/install.php --dbserver=127.0.0.1 --dbuser=wikiuser --dbpass=Good
 Create a set of databases
 ```
 
-for lang in ar es ko; do rm LocalSettings.php; php maintenance/install.php --dbname=wikipedia_$lang --dbserver=127.0.0.1 --dbuser=wikiuser --dbpass=GoodDay --pass=aaaaa "Arabic Wikipedia" "admin"; done
+for lang in ar es ko; do rm LocalSettings.php; php maintenance/install.php --dbname=wikipedia_$lang --dbserver=127.0.0.1 --dbuser=wikiuser --dbpass=GoodDay --pass=aaaaa "Local Wikipedia" "admin"; done
 
 ```
 
@@ -83,6 +84,59 @@ php maintenance/install.php --dbname=wikipedia_tr --dbserver=127.0.0.1 --dbuser=
 php maintenance/install.php --dbname=wikipedia_ar --dbserver=127.0.0.1 --dbuser=wikiuser --dbpass=GoodDay --pass=aaaaa "Arabic Wikipedia" "admin"
 ```
 
+### Mysql / MariaDB
+The database of English Wikipedia would be huge, and if disk size is limited and would have to put the database file in to a different director (of a different disk), after you create the database, you can move the database directory, for example, /var/lib/mysql/wikipedia_en to somewhere else, and create a symlink to it.
+
+You may encounter an error as follow:
+
+```mysql
+mysql> use wikipedia_en;
+No connection. Trying to reconnect...
+Connection id:    2
+Current database: *** NONE ***
+
+Database changed
+mysql> show tables;
+ERROR 1018 (HY000): Can't read dir of './wikipedia_en/' (errno: 13 - Permission denied)
+
+```
+
+To correct the above error, you might have to do the following:
+
+#### Systemd Service
+```bash
+vi /etc/systemd/system/multi-user.target.wants/mysql.service
+
+# add the following to the [Service] section
+...
+ReadWritePaths=/data4/mysql_data
+ReadWritePaths=/data/mysql_data
+
+systemctl daemon-reload
+service mysql restart
+
+
+```
+
+#### AppArmor
+```bash
+vi /etc/apparmor.d/usr.sbin.mysqld
+
+# Update the content as follows, change the directory name to yours
+...
+# Allow data dir access
+  /var/lib/mysql/ r,
+  /var/lib/mysql/** rwk,
+  /data/mysql_data/ r,
+  /data/mysql_data/** rwk,
+  /data4/mysql_data/ r,
+  /data4/mysql_data/** rwk,
+...
+
+service apparmor restart
+
+```
+
 ## Mediawiki Updates
 
 ```
@@ -94,13 +148,13 @@ php maintenance/update.php
 # WikiDump2SQLite
 
 
-WikiDump2SQLite is a collection of tools that can import the database dumps into mysql database, and create sqlite database from it
+WikiDump2SQLite is a collection of tools that can import the database dumps into mysql database, and create sqlite database from it.
 
 ## prerequisite
 
 ### Antelope Search Engine
 
-WikiDump2SQLite doesn't use antelope as a search engine and do any searches with it, but it requires its text processing ability to read / extract Wikipedia pages from the dump.
+WikiDump2SQLite doesn't use antelope as a search engine nor do any searches with it, but it requires its text processing ability to read in Wikipedia pages which are in XML format
 
 #### Antelope Repository
 
