@@ -48,8 +48,6 @@ WikimediaBadges
 WikimediaMessages
 
 
-
-
 ## Mediawiki Installation
 
 ```bash
@@ -102,7 +100,7 @@ WikiDump2SQLite is a collection of tools that can import the database dumps into
 
 ### Antelope Search Engine
 
-WikiDump2SQLite doesn't use antelope as a search engine and do any searches with it, but it requires its text processing ability to read Wikipedia pages which are in XML format
+WikiDump2SQLite doesn't use antelope as a search engine and do any searches with it, but it requires its text processing ability to read / extract Wikipedia pages from the dump.
 
 #### Antelope Repository
 
