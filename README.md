@@ -173,6 +173,6 @@ import_dump implicitly uses "/data/mediawiki/all/{lang_code}wiki" as the mediawi
 
 
 ```bash
-
+ import_dump -threads 12 -n 500 /data4/wikipedia/zhwiki/2019/zhwiki-20190920-pages-articles-multistream.xml 
 ```
 
