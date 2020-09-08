@@ -48,6 +48,14 @@ WikibaseQualityConstraints
 WikimediaBadges
 WikimediaMessages
 
+### Wikibase
+Wikibase requires many submodule to work
+
+```
+git submodule init
+git submodule update --recursive --remote
+```
+
 
 ## Mediawiki Installation
 
@@ -179,6 +187,14 @@ import_dump implicitly uses "/data/mediawiki/all/{lang_code}wiki" as the mediawi
 
 
 ```bash
+cd /data/mediawiki/all/zhwiki/maintenance
  import_dump -threads 12 -n 500 /data4/wikipedia/zhwiki/2019/zhwiki-20190920-pages-articles-multistream.xml 
 ```
 
+### dump2db
+
+Dump the pages into sqlite databases
+
+```
+dump2db -batch 0 -thread 12 -wikisite http://arwiki.tyo.com.au -wikiroot /wiki/ ../arwiki-20200420-pages-articles-multistream.xml.bz2
+```
